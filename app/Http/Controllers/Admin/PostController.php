@@ -53,6 +53,10 @@ class PostController extends Controller
     {
         $post = Post::create($request->only(['title', 'content', 'posted_at', 'author_id', 'thumbnail_id']));
 
+        $user = User::all();
+
+        $post->sendNotificationEmail($post, $user);
+
         return redirect()->route('admin.posts.edit', $post)->withSuccess(__('posts.created'));
     }
 

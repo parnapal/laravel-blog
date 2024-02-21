@@ -15,6 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $no_of_rows = 1000;
+
+        for( $i=0; $i < $no_of_rows; $i++ ){
+            DB::table('users')->insert([
+                'name' => Str::random(10),
+                'email' => Str::random(10).'@example.com',
+                'password' => Hash::make('password'),
+            ]);
+        }
+
+
+        /*
         // Roles
         Role::firstOrCreate(['name' => Role::ROLE_EDITOR]);
         $role_admin = Role::firstOrCreate(['name' => Role::ROLE_ADMIN]);
@@ -61,5 +73,7 @@ class DatabaseSeeder extends Seeder
                 'content' => "Hey ! I'm a comment as example."
             ]
         );
+
+        */
     }
 }

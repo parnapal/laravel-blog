@@ -12,9 +12,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+use App\Mail\SendEmailTest;
+
+use Illuminate\Support\Facades\Mail;
+
+
 class Post extends Model
 {
     use HasFactory, Likeable;
+
+    public $guarded = [];
 
     /**
      * The attributes that are mass assignable.
@@ -46,6 +53,15 @@ class Post extends Model
     {
         parent::boot();
         static::addGlobalScope(new PostedScope);
+    }
+
+
+    public function sendNotificationEmail($post, $users)
+    {
+        //Mail::to(config('mail.notification_recipient'))->queue(new SendEmailTest($this));
+        foreach($users as $user){
+            Mail::to($user->email)->queue(new SendEmailTest($post, $user->email));
+        }
     }
 
     /**
